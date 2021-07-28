@@ -99,6 +99,19 @@ func DeleteMessage(messageID string, db *gorm.DB) error {
 	return err
 }
 
+func GetRecieversForMessage(messageID string, db *gorm.DB) ([]User, error) {
+	var r []User
+	n := db.Model(&MessageReciever{}).Where("message_id = ?", messageID).
+		Select("*").
+		Joins("JOIN message_recievers on message_reciever.uuid = users.uuid").
+		Scan(&r)
+	if n.RowsAffected == 0 {
+		return nil, ErrNoMessagesFound
+	}
+	return r, nil
+
+}
+
 func (m *Message) GetReplies(db *gorm.DB) ([]Message, error) {
 	return GetReplies(m.MessageID, db)
 }
