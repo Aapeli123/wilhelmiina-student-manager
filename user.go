@@ -193,3 +193,9 @@ func (u *User) ToData() UserData {
 		Surname:   u.Surname,
 	}
 }
+
+func GetUserList(db *gorm.DB) ([]User, error) {
+	ul := []User{}
+	tx := db.Model(&User{}).Select("*").Scan(&ul)
+	return ul, tx.Error
+}
