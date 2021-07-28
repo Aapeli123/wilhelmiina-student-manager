@@ -22,7 +22,7 @@ import 	(
     "github.com/Aapeli123/wilhelmiina-student-manager"
 
     // Import gorm and necessary database drivers
-	"gorm.io/driver/sqlite"
+    "gorm.io/driver/sqlite"
     "gorm.io/gorm"
 
     ) 
