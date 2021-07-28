@@ -8,7 +8,6 @@
 * User passwords stored by hashing them with argon2id salted using 128 byte salt
 * Currently uses sqlite as database but it is really easy to change in db.go
 ## Pull requests welcome!
-<<<<<<< HEAD
 
 # Testing:
 * Unit tests can be run using `go test .`
@@ -40,5 +39,3 @@ func main() {
     // Database needs to be supplied to any method as the last parameter
 }
 ```
-=======
->>>>>>> c25214ebca4f65e64d69e7ba572fb99779dd939b
