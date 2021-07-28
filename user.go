@@ -96,11 +96,15 @@ func GetUserByUn(un string, db *gorm.DB) (User, error) {
 	return user, nil
 }
 
-func ChangeUserNames(firstname string, lastname string, UUID string, db *gorm.DB) error {
+func ChangeUserNames(firstname string, lastname string, username string, UUID string, db *gorm.DB) error {
+	if _, err := GetUserByUn(username, db); err != ErrUserNotFound {
+		return ErrUserAlreadyExists
+	}
 	tx := db.Begin()
 	tx.Model(User{}).Where("uuid = ?", UUID).
 		Update("firstname", firstname).
-		Update("lastname", lastname)
+		Update("lastname", lastname).
+		Update("username", username)
 
 	err := tx.Commit().Error
 	return err
