@@ -194,8 +194,15 @@ func (u *User) ToData() UserData {
 	}
 }
 
-func GetUserList(db *gorm.DB) ([]User, error) {
+func GetUserList(db *gorm.DB) ([]UserData, error) {
 	ul := []User{}
+	udl := []UserData{}
 	tx := db.Model(&User{}).Select("*").Scan(&ul)
-	return ul, tx.Error
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	for _, u := range ul {
+		udl = append(udl, u.ToData())
+	}
+	return udl, nil
 }
