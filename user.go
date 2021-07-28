@@ -110,6 +110,36 @@ func ChangeUserNames(firstname string, lastname string, username string, UUID st
 	return err
 }
 
+func ChangeUsername(username string, UUID string, db *gorm.DB) error {
+	if _, err := GetUserByUn(username, db); err != ErrUserNotFound {
+		return ErrUserAlreadyExists
+	}
+	tx := db.Begin()
+	tx.Model(User{}).Where("uuid = ?", UUID).
+		Update("username", username)
+
+	err := tx.Commit().Error
+	return err
+}
+
+func ChangeFirstName(firstname string, UUID string, db *gorm.DB) error {
+	tx := db.Begin()
+	tx.Model(User{}).Where("uuid = ?", UUID).
+		Update("firstname", firstname)
+
+	err := tx.Commit().Error
+	return err
+}
+
+func ChangeLastName(surname string, UUID string, db *gorm.DB) error {
+	tx := db.Begin()
+	tx.Model(User{}).Where("uuid = ?", UUID).
+		Update("lastname", surname)
+
+	err := tx.Commit().Error
+	return err
+}
+
 func ChangePassword(newpass string, UUID string, db *gorm.DB) error {
 	newHash, err := genHashString(newpass)
 	if err != nil {
