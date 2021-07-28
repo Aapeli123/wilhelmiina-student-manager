@@ -3,10 +3,13 @@ package wilhelmiina
 import (
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 func InitDatabase(databaseName string) (*gorm.DB, error) {
-	db, err := gorm.Open(sqlite.Open(databaseName))
+	db, err := gorm.Open(sqlite.Open(databaseName), &gorm.Config{
+		Logger: logger.Discard,
+	})
 	if err != nil {
 		return nil, err
 	}
