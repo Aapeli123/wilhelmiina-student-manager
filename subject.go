@@ -10,15 +10,17 @@ import (
 type Subject struct {
 	SubjectID   string `gorm:"primaryKey"`
 	SubjectName string
+	SubjectDesc string
 	ShortName   string
 }
 
-func CreateSubject(name string, shortname string, db *gorm.DB) (Subject, error) {
+func CreateSubject(name string, shortname string, desc string, db *gorm.DB) (Subject, error) {
 	id := uuid.New().String()
 	s := Subject{
 		SubjectID:   id,
 		SubjectName: name,
 		ShortName:   shortname,
+		SubjectDesc: desc,
 	}
 
 	tx := db.Begin()
