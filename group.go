@@ -247,6 +247,16 @@ func GetGroup(groupID string, db *gorm.DB) (GroupData, error) {
 	}, nil
 }
 
+func ChangeGroupName(new string, groupID string, db *gorm.DB) error {
+	tx := db.Begin()
+	tx.Model(Group{}).Where("group_id = ?", groupID).Update("group_name", new)
+	err := tx.Commit().Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (g *Group) GetUsers(db *gorm.DB) ([]User, error) {
 	return GetGroupUsers(g.GroupID, db)
 }
