@@ -206,3 +206,16 @@ func GetUserList(db *gorm.DB) ([]UserData, error) {
 	}
 	return udl, nil
 }
+
+func GetTeacherList(db *gorm.DB) ([]UserData, error) {
+	ul := []User{}
+	udl := []UserData{}
+	tx := db.Model(&User{}).Select("*").Where("role = ?", Teacher).Scan(&ul)
+	if tx.Error != nil {
+		return nil, tx.Error
+	}
+	for _, u := range ul {
+		udl = append(udl, u.ToData())
+	}
+	return udl, nil
+}
