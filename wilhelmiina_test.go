@@ -52,7 +52,7 @@ func TestSubjects(test *testing.T) {
 	db := getTestDatabase(test)
 
 	// Fill database with test data:
-	maa, err := CreateSubject("Pitkä Matematiikka", "MAA", db)
+	maa, err := CreateSubject("Pitkä Matematiikka", "MAA", "Opi laskemaan paljon", db)
 	if err != nil {
 		test.Fatal(err)
 	}
@@ -60,7 +60,7 @@ func TestSubjects(test *testing.T) {
 	NewCourse("Geometria", "MAA.3", "ympyrä on pyöreä ja kolmio on tärkeä xd", maa.SubjectID, db)
 	NewCourse("Vektorit", "MAA.4", "Haluux nähä mun vektorin suunnan ja suuruuden", maa.SubjectID, db)
 
-	ai, err := CreateSubject("Äidinkieli", "AI", db)
+	ai, err := CreateSubject("Äidinkieli", "AI", "Opi puhumaan", db)
 	if err != nil {
 		test.Fatal(err)
 	}
@@ -300,9 +300,9 @@ func TestWilhelmiina(t *testing.T) {
 	_, err = CreateUser("student2", "Should", "fail", "password2", Student, db)
 	assert_not(err, nil, t)
 
-	maa, err := CreateSubject("Pitkä Matematiikka", "MAA", db)
+	maa, err := CreateSubject("Pitkä Matematiikka", "MAA", "Opi laskemaan paljon", db)
 	assert(err, nil, t)
-	mab, err := CreateSubject("Lyhyt Matematiikka", "MAB", db)
+	mab, err := CreateSubject("Lyhyt Matematiikka", "MAB", "Opi laskemaan vähemmän", db)
 	assert(err, nil, t)
 
 	maa2, err := NewCourse("Paraabelit", "MAA2", "y=x²", maa.SubjectID, db)
