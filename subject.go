@@ -34,6 +34,33 @@ func CreateSubject(name string, shortname string, desc string, db *gorm.DB) (Sub
 	return s, nil
 }
 
+func ChangeSubjectName(new string, subjectid string, db *gorm.DB) error {
+	tx := db.Begin()
+	tx.Model(User{}).Where("subject_id = ?", subjectid).
+		Update("name", new)
+
+	err := tx.Commit().Error
+	return err
+}
+
+func ChangeSubjectShortName(new string, subjectid string, db *gorm.DB) error {
+	tx := db.Begin()
+	tx.Model(User{}).Where("subject_id = ?", subjectid).
+		Update("short_name", new)
+
+	err := tx.Commit().Error
+	return err
+}
+
+func ChangeSubjectDesc(new string, subjectid string, db *gorm.DB) error {
+	tx := db.Begin()
+	tx.Model(User{}).Where("subject_id = ?", subjectid).
+		Update("subject_desc", new)
+
+	err := tx.Commit().Error
+	return err
+}
+
 var ErrNoCoursesFound = errors.New("no courses found for this subject")
 
 // Deletes Subject and all courses for it:
