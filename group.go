@@ -195,14 +195,33 @@ func GetGroupUsers(groupID string, db *gorm.DB) ([]User, error) {
 	return data, nil
 }
 
-func GetGroupsForCourse(courseID string, db *gorm.DB) ([]Group, error) {
+func groupArrToGroupDArr(groupArr []Group, db *gorm.DB) ([]GroupData, error) {
+	var data []GroupData
+	for _, g := range groupArr {
+		times, err := GetGroupTimes(g.GroupID, db)
+		if err != nil {
+			return nil, err
+		}
+		data = append(data, GroupData{
+			GroupInfo:  g,
+			GroupTimes: times,
+		})
+	}
+	return data, nil
+}
+
+func GetGroupsForCourse(courseID string, db *gorm.DB) ([]GroupData, error) {
 	var data []Group
 	tx := db.Model(Group{}).Where("course_id = ?", courseID).Scan(&data)
 	err := tx.Error
 	if err != nil {
 		return nil, err
 	}
-	return data, nil
+	gdarr, err := groupArrToGroupDArr(data, db)
+	if err != nil {
+		return nil, err
+	}
+	return gdarr, nil
 }
 
 type GroupData struct {

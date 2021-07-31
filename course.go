@@ -87,7 +87,7 @@ func DeleteCourse(courseID string, db *gorm.DB) error {
 		return err
 	}
 	for _, g := range groups {
-		g.Delete(db)
+		g.GroupInfo.Delete(db)
 	}
 	tx := db.Begin()
 	tx.Delete(Course{}, "course_id = ?", courseID)
