@@ -48,6 +48,21 @@ func DeleteSubject(subjectID string, db *gorm.DB) error {
 	return tx.Commit().Error
 }
 
+var ErrNoSubjectsFound = errors.New("no subjects found")
+
+func GetSubjects(db *gorm.DB) ([]Subject, error) {
+	var data []Subject
+	tx := db.Model(&Subject{}).Select("*").Scan(&data)
+	err := tx.Error
+	if err != nil {
+		return nil, err
+	}
+	if tx.RowsAffected == 0 {
+		return nil, ErrNoSubjectsFound
+	}
+	return data, nil
+}
+
 func GetCoursesForSubject(subjectID string, db *gorm.DB) ([]Course, error) {
 	var res []Course
 	result := db.Model(&Subject{}).Select("*").Where("subjects.subject_id = ?", subjectID).Joins("INNER JOIN courses on courses.subject_id = subjects.subject_id").Scan(&res)
