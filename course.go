@@ -57,16 +57,25 @@ func (c *Course) SetDescription(newDesc string, db *gorm.DB) error {
 	return nil
 }
 
-func (c *Course) SetName(newName string, newShortName, db *gorm.DB) error {
+func (c *Course) SetName(newName string, db *gorm.DB) error {
 	tx := db.Begin()
 	tx.Model(c).Where("course_id = ?", c.CourseID).Update("course_name", newName)
-	tx.Model(c).Where("course_id = ?", c.CourseID).Update("course_name_short", newShortName)
 	err := tx.Commit().Error
 	if err != nil {
 		return err
 	}
 	return nil
 }
+func (c *Course) SetShortName(newName string, db *gorm.DB) error {
+	tx := db.Begin()
+	tx.Model(c).Where("course_id = ?", c.CourseID).Update("course_name_short", newName)
+	err := tx.Commit().Error
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (c *Course) Delete(db *gorm.DB) error {
 	return DeleteCourse(c.CourseID, db)
 }
