@@ -21,6 +21,7 @@ type UserData struct {
 	Username  string
 	Firstname string
 	Surname   string
+	Role      Role
 }
 
 type GuardianData struct {
@@ -191,6 +192,7 @@ func (u *User) ToData() UserData {
 		Username:  u.Username,
 		Firstname: u.Firstname,
 		Surname:   u.Surname,
+		Role:      u.Role,
 	}
 }
 
